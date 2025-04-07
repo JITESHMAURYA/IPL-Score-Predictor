@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🏏 IPL Score Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 5% auto;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, #ff6ec4, #7873f5); /* Bright gradient */
+            
+            /* Clip background to the text for modern look */
+            background-clip: text;               /* Standard */
+            -webkit-background-clip: text;       /* Chrome, Safari */
+            
+            -webkit-text-fill-color: transparent; /* Required for WebKit to show gradient */
+            color: transparent;                   /* Fallback for other browsers */
+            
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+
+
+
+
+        label {
+            font-weight: 600;
+            color: #ffffff; /* Pure white */
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: #1e1e2f; /* Dark background */
+            color: #e0e0e0; /* Smooth light gray text */
+        }
+
+
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 5px #00f5ff;
+        }
+
+        button {
+            padding: 14px;
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+            background: linear-gradient(135deg, #00aaff, #0051ff);
+        }
+
+        .result {
+            margin-top: 25px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            animation: slideIn 0.7s ease;
+        }
+
+        .result.success {
+            background: rgba(0, 128, 96, 0.2);
+            color: #00ffc3;
+            border-left: 5px solid #00ffc3;
+        }
+
+        .result.error {
+            background: rgba(128, 0, 0, 0.2);
+            color: #ff6b6b;
+            border-left: 5px solid #ff6b6b;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🏆 IPL Final Score Predictor 🔮</h2>
+        <form method="post">
+            <label for="bat_team">🟡 Batting Team:</label>
+            <select name="bat_team" required>
+                {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="bowl_team">🔵 Bowling Team:</label>
+            <select name="bowl_team" required>
+                {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="overs">📊 Overs Completed:</label>
+            <input type="number" step="0.1" min="5" max="20" name="overs" required>
+
+            <label for="wickets">💥 Wickets Lost:</label>
+            <input type="number" min="0" max="10" name="wickets" required>
+
+            <label for="runs">🏃‍♂️ Current Runs:</label>
+            <input type="number" min="0" name="runs" required>
+
+            <button type="submit">🚀 Predict Score</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result {% if prediction is string and prediction.startswith('Error') %}error{% else %}success{% endif %}">
+            {% if prediction is string and prediction.startswith("Error") %}
+                ❌ {{ prediction }}
+            {% else %}
+                🎯 Predicted Final Score: <strong>{{ prediction }}</strong> runs!
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>✨ Crafted by THE BOYZ with ❤️ for IPL lovers</footer>
+</body>
+</html>
